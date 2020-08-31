@@ -8,8 +8,8 @@ const app = express();
 app.use(express.static(__dirname + '/public'));
 app.use(express.urlencoded({ extended: true }));
 
-const PORT = process.env.port || 3000;
-app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log(`Listening on port ${PportRT}`));
 
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "/public/index.html"));
