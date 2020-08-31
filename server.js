@@ -39,6 +39,15 @@ app.post("/api/notes", (req, res) => {
 app.get("/api/notes", (req, res) => {
 
     // Create directory and file if doesn't exist
+
+    fs.mkdir(path.join(__dirname, "/db"), function(err) {
+        if (err) {
+            if (err.code === "EEXIST") {
+            return;
+            }
+        }
+    });
+
     if (!fs.existsSync(path.join(__dirname, "/db/db.json"))) {
         console.log("The file db.json doesn't exist. Creating...");
         fs.writeFileSync(path.join(__dirname, "/db/db.json"), "[]");
