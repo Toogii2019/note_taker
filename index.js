@@ -22,21 +22,48 @@ app.get("/notes", (req, res) => {
 });
 
 app.post("/api/notes", (req, res) => {
-
     const data = fs.readFileSync(path.join(__dirname, "/db/db.json"),
             {encoding:'utf8', flag:'r'});
 
     var newData = JSON.parse(data);
+    if (newData.length === 0) {
+        req.body.id = 0;
+        newData = [];
+    }
+    else {
+        req.body.id = newData[newData.length-1].id + 1;
+    }
     newData.push(req.body);
     fs.writeFileSync(path.join(__dirname, "/db/db.json"), JSON.stringify(newData));
-    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.status(200).send('Ok')
 });
 
 app.get("/api/notes", (req, res) => {
+
+    // Create directory and file if doesn't exist
+    if (!fs.existsSync(path.join(__dirname, "/db/db.json"))) {
+        console.log("The file db.json doesn't exist. Creating...");
+        fs.writeFileSync(path.join(__dirname, "/db/db.json"), "[]");
+    }
     const data = fs.readFileSync(path.join(__dirname, "/db/db.json"),
             {encoding:'utf8', flag:'r'});
-    console.log(data);
     res.send(data);
 });
 
+app.delete("/api/notes/:id", (req, res) => {
+    const datas = fs.readFileSync(path.join(__dirname, "/db/db.json"),
+            {encoding:'utf8', flag:'r'});
+    let parsedData = JSON.parse(datas);
+    let newData = [];
+    parsedData.forEach(data => {
+        if (data.id != req.params.id) {
+            newData.push(data);
+        }
+    })
+    writeData(newData);
+    res.status(200).send('Ok')
+});
 
+function writeData(data) {
+    fs.writeFileSync(path.join(__dirname, "/db/db.json"), JSON.stringify(data));
+}

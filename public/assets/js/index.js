@@ -17,7 +17,7 @@ const getNotes = () => {
 
 // A function for saving a note to the db
 const saveNote = (note) => {
-  console.log(note);
+  
   return $.ajax({
     url: "/api/notes",
     data: note,
@@ -55,11 +55,13 @@ const handleNoteSave = function () {
   const newNote = {
     title: $noteTitle.val(),
     text: $noteText.val(),
+    id: 0
   };
-
   saveNote(newNote).then(() => {
     getAndRenderNotes();
     renderActiveNote();
+    
+
   });
 };
 
@@ -69,7 +71,6 @@ const handleNoteDelete = function (event) {
   event.stopPropagation();
 
   const note = $(this).parent(".list-group-item").data();
-
   if (activeNote.id === note.id) {
     activeNote = {};
   }
@@ -129,8 +130,10 @@ const renderNoteList = (notes) => {
   }
 
   JSON.parse(notes).forEach((note) => {
-    const $li = create$li(note.title).data(note);
-    noteListItems.push($li);
+    if (note) { 
+      const $li = create$li(note.title).data(note);
+      noteListItems.push($li);
+    }
   });
 
   $noteList.append(noteListItems);
