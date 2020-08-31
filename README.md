@@ -38,7 +38,8 @@
 
 ## Usage
 
- 1. Deployed link is "https://dry-ocean-49147.herokuapp.com/" 2. Local repo has to have a "db/db.json" file with emply list on it.
+ 1. Deployed link is "https://dry-ocean-49147.herokuapp.com/" 
+ 2. Local repo has to have a "db/db.json" file with emply list on it.
 
 
 ## License
